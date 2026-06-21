@@ -1,71 +1,40 @@
-# =============================================================================
-# Oil & Gas Job Agent — Configuration
-# FREE engines: DDGS (unlimited) + Serper.dev (2500/mo) + Google PSE (100/day)
-# Paid upgrade: SerpAPI
-# =============================================================================
-import os, json
+# Oil & Gas Job Agent — Config
+import os
 
-# =============================================================================
-# 🔍 SEARCH ENGINE KEYS (all optional — DDGS works without any)
-# =============================================================================
-SERPER_API_KEY   = os.getenv("SERPER_API_KEY", "")     # https://serper.dev — 2,500 free/mo
-GOOGLE_CSE_KEY   = os.getenv("GOOGLE_CSE_KEY", "")     # Google Custom Search — 100/day free
-GOOGLE_CSE_CX    = os.getenv("GOOGLE_CSE_CX", "")      # Your search engine ID
-SERPAPI_KEY      = os.getenv("SERPAPI_KEY", "")        # Paid fallback
+# ── Search ──
+# ddgs (DuckDuckGo API backend) — FREE, unlimited, no key needed
 
-# =============================================================================
-# 📧 EMAIL — "resend", "brevo", "sendgrid", "gmail"
-# =============================================================================
-EMAIL_PROVIDER   = os.getenv("EMAIL_PROVIDER", "resend")
-FROM_EMAIL       = os.getenv("FROM_EMAIL", "onboarding@resend.dev")
-FROM_NAME        = os.getenv("FROM_NAME", "Oil & Gas Job Agent")
-RECIPIENT_EMAIL  = os.getenv("RECIPIENT_EMAIL", "gregslum@gmail.com")
-RESEND_API_KEY   = os.getenv("RESEND_API_KEY", "")
-BREVO_SMTP_KEY   = os.getenv("BREVO_SMTP_KEY", "")
-BREVO_LOGIN      = os.getenv("BREVO_LOGIN", "")
-SENDGRID_API_KEY = os.getenv("SENDGRID_API_KEY", "")
-GMAIL_ADDRESS    = os.getenv("GMAIL_ADDRESS", "")
-GMAIL_APP_PASS   = os.getenv("GMAIL_APP_PASS", "")
+# ── Email (Resend) ──
+EMAIL_PROVIDER  = os.getenv("EMAIL_PROVIDER", "resend")
+RESEND_API_KEY  = os.getenv("RESEND_API_KEY", "")
+FROM_EMAIL      = os.getenv("FROM_EMAIL", "onboarding@resend.dev")
+FROM_NAME       = os.getenv("FROM_NAME", "Oil & Gas Job Agent")
+RECIPIENT       = os.getenv("RECIPIENT_EMAIL", "gregslum@gmail.com")
 
-# =============================================================================
-# 🤖 TELEGRAM
-# =============================================================================
-TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN", "")
-TELEGRAM_CHAT_ID   = os.getenv("TELEGRAM_CHAT_ID", "")
+# ── Telegram ──
+TG_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN", "")
+TG_CHAT  = os.getenv("TELEGRAM_CHAT_ID", "")
 
-# =============================================================================
-# ⏰ SCHEDULE
-# =============================================================================
-SCHEDULE_CRON = "0 7 * * 2,5"
+# ── Schedule ──
+CRON = "0 7 * * 2,5"  # Tue & Fri 07:00 UTC = 08:00 Lagos
+DELAY = 1.5            # seconds between queries
+TIMEOUT = 20           # HTTP timeout
 
-# =============================================================================
-# 🔍 SEARCH SETTINGS
-# =============================================================================
-REQUEST_TIMEOUT      = 20
-SEARCH_DELAY_SECONDS = 1.5   # Polite delay between queries
-MAX_RESULTS          = 8
+# ── Tue (1-7) / Fri (8-14) ──
+TUE_POSITIONS = [
+    "Manager","Project Manager","HSE Manager",
+    "Maintenance Manager","Maintenance Engineer",
+    "HSE Engineer","Safety Engineer",
+]
+FRI_POSITIONS = [
+    "Project Engineer","Corrosion Engineer",
+    "Reliability Engineer","Reliability Manager",
+    "Facilities Engineer","Operations Integrity",
+    "Management of Change Coordinator",
+]
+POSITIONS = TUE_POSITIONS + FRI_POSITIONS
 
-# =============================================================================
-# 📋 14 POSITIONS — split Tue (1-7) / Fri (8-14)
-# =============================================================================
-POSITIONS_WEEK = {
-    "tuesday": [
-        "Manager", "Project Manager", "HSE Manager",
-        "Maintenance Manager", "Maintenance Engineer",
-        "HSE Engineer", "Safety Engineer",
-    ],
-    "friday": [
-        "Project Engineer", "Corrosion Engineer",
-        "Reliability Engineer", "Reliability Manager",
-        "Facilities Engineer", "Operations Integrity",
-        "Management of Change Coordinator",
-    ],
-}
-POSITIONS = POSITIONS_WEEK["tuesday"] + POSITIONS_WEEK["friday"]
-
-# =============================================================================
-# 🌍 ALL 50 COUNTRIES
-# =============================================================================
+# ── 50 Countries ──
 COUNTRIES = [
     "Trinidad and Tobago","United Arab Emirates","Ghana","Uganda","Kenya",
     "Namibia","Equatorial Guinea","Kazakhstan","Turkmenistan","Uzbekistan",
@@ -79,10 +48,8 @@ COUNTRIES = [
     "Azerbaijan","Tajikistan","Sao Tome and Principe","Gabon","Congo Brazzaville",
 ]
 
-# =============================================================================
-# 🛂 VISA SPONSORSHIP KEYWORDS (25)
-# =============================================================================
-VISA_KEYWORDS = [
+# ── Keywords ──
+VISA_KW = [
     "visa sponsorship","visa sponsored","sponsor visa",
     "sponsorship available","work visa sponsorship","employer sponsored visa",
     "work permit sponsorship","sponsor work permit","international candidates welcome",
@@ -94,10 +61,7 @@ VISA_KEYWORDS = [
     "international applicants welcome",
 ]
 
-# =============================================================================
-# 🛢️ OIL & GAS KEYWORDS (21)
-# =============================================================================
-OIL_GAS_KEYWORDS = [
+OIL_GAS_KW = [
     "oil and gas","oil & gas","oil gas","upstream","downstream",
     "midstream","petroleum","petrochemical","refinery","refining",
     "offshore","onshore","drilling","exploration","production",
